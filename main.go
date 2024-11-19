@@ -12,7 +12,9 @@ import (
 )
 
 func main() {
-	ctx, _ := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	logger.Init()
 	config.Init()
 	server := &http.Server{

@@ -24,7 +24,9 @@ func AddToast(w http.ResponseWriter, t Toast) {
 		Toast: t,
 	}
 
-	res, _ := json.Marshal(a)
-
+	res, err := json.Marshal(a)
+	if err != nil {
+		return
+	}
 	w.Header().Set("HX-Trigger", string(res))
 }
