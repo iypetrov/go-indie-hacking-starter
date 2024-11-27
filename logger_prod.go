@@ -1,17 +1,24 @@
-//go:build local
-// +build local
+//go:build prod
+// +build prod
 
-package logger
+package main
 
 import (
 	"fmt"
 	"log"
 )
 
-type logger struct {}
+type Logger interface {
+	Debug(msg string, args ...interface{})
+	Info(msg string, args ...interface{})
+	Warn(msg string, args ...interface{})
+	Error(msg string, args ...interface{})
+}
 
-func New() Logger {
-    return &logger{}
+type logger struct{}
+
+func NewLogger() Logger {
+	return &logger{}
 }
 
 func (l *logger) Debug(msg string, args ...interface{}) {

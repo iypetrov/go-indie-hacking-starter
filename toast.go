@@ -1,4 +1,4 @@
-package toast
+package main
 
 import (
 	"encoding/json"
