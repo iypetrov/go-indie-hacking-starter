@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
-func static() http.Handler {
+func static(logger Logger) http.Handler {
+	logger.Info("serving static files from local directory")
 	return http.StripPrefix("/", http.FileServer(http.Dir("static")))
 }

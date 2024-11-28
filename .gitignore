@@ -34,7 +34,7 @@ tmp/
 
 # Generated files
 vendor/
-internal/database/
+database/
 *_templ.go
 *_templ.txt
 output.css

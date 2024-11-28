@@ -1,11 +1,26 @@
 package views
 
-import "github.com/iypetrov/go-indie-hacking-starter/templates"
+import (
+	"github.com/iypetrov/go-indie-hacking-starter/templates"
+	"github.com/iypetrov/go-indie-hacking-starter/templates/components"
+)
 
 templ PublicHome() {
 	@templates.Base() {
-		<div class="flex w-full h-screen">
-			<h1 class="text-red-500">Hello world!</h1>
+		<div class="h-screen w-full flex flex-col justify-center items-center">
+			@templates.BigLogo()
+			<h1 class="text-2xl font-bold text-center mt-6 mb-4">
+				A template project for creating simple, fast, and secure web apps with 
+				<span class="text-blue-500">Go</span>, 
+				<span class="text-orange-500">AWS</span>, and 
+				<span class="text-purple-500">Stripe</span>.
+			</h1>
+			<div
+				id="mailing-list-form"
+				class="w-full flex flex-col justify-center items-center"
+			>
+				@components.PublicMailingListForm(components.PublicMailingListFormInput{})
+			</div>
 		</div>
 	}
 }
