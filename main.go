@@ -63,8 +63,10 @@ func main() {
 			mux.Get("/home", h.HomeView)
 		})
 		mux.Route("/client", func(mux chi.Router) {
+			// No handlers yet
 		})
 		mux.Route("/admin", func(mux chi.Router) {
+			// No handlers yet
 		})
 	})
 	mux.Route("/api", func(mux chi.Router) {
@@ -75,8 +77,10 @@ func main() {
 		})
 
 		mux.Route("/client/v0", func(mux chi.Router) {
+			// No handlers yet
 		})
 		mux.Route("/admin/v0", func(mux chi.Router) {
+			// No handlers yet
 		})
 	})
 	mux.Get("/health-check", func(w http.ResponseWriter, r *http.Request) {
