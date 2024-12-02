@@ -49,7 +49,7 @@ func main() {
 	formDecoder := form.NewDecoder()
 	formValidator := validator.New(validator.WithRequiredStructEnabled())
 
-	h := Handler{
+	hnd := Handler{
 		formDecoder:   formDecoder,
 		formValidator: formValidator,
 		conn:          conn,
@@ -57,10 +57,10 @@ func main() {
 	}
 
 	mux := chi.NewRouter()
-	mux.Handle("/*", static(logger))
+	mux.Handle("/*", StaticFiles(logger))
 	mux.Route("/p", func(mux chi.Router) {
 		mux.Route("/public", func(mux chi.Router) {
-			mux.Get("/home", h.HomeView)
+			mux.Get("/home", hnd.HomeView)
 		})
 		mux.Route("/client", func(mux chi.Router) {
 			// No handlers yet
@@ -72,7 +72,7 @@ func main() {
 	mux.Route("/api", func(mux chi.Router) {
 		mux.Route("/public/v0", func(mux chi.Router) {
 			mux.Route("/mailing-list", func(mux chi.Router) {
-				mux.Post("/", MakeTemplHandler(ctx, logger, h.AddMailToMailingList))
+				mux.Post("/", MakeTemplHandler(ctx, logger, hnd.AddEmailToMailingList))
 			})
 		})
 

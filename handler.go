@@ -23,24 +23,24 @@ type Handler struct {
 	queries       *database.Queries
 }
 
-func (h *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
+func (hnd *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, views.PublicHome())
 }
 
-func (h *Handler) AddMailToMailingList(ctx context.Context, logger Logger, w http.ResponseWriter, r *http.Request) error {
+func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w http.ResponseWriter, r *http.Request) error {
 	err := r.ParseForm()
 	if err != nil {
 		AddToast(w, ErrorInternalServerError(ErrParsingFrom))
 		return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
 	}
 	var input components.PublicMailingListFormInput
-	err = h.formDecoder.Decode(&input, r.Form)
+	err = hnd.formDecoder.Decode(&input, r.Form)
 	if err != nil {
 		AddToast(w, ErrorInternalServerError(ErrDecodingForm))
 		return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
 	}
 
-	err = h.formValidator.Struct(input)
+	err = hnd.formValidator.Struct(input)
 	if err != nil {
 		if _, ok := err.(*validator.InvalidValidationError); ok {
 
@@ -62,7 +62,7 @@ func (h *Handler) AddMailToMailingList(ctx context.Context, logger Logger, w htt
 		}
 	}
 
-	output, err := h.queries.AddEmailToMailingList(
+	output, err := hnd.queries.AddEmailToMailingList(
 		ctx,
 		database.AddEmailToMailingListParams{
 			ID:        uuid.New(),
