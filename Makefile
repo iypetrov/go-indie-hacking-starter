@@ -9,18 +9,18 @@ run-local-mac:
 	@docker ps -a --filter "name=^/go_indie_hacking_starter_postgres$$" --format "{{.Names}}" | grep -w go_indie_hacking_starter_postgres > /dev/null 2>&1 || \
 	docker run -d --name go_indie_hacking_starter_postgres -e POSTGRES_DB=go-indie-hacking-starter -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -v go_indie_hacking_starter_data:/var/lib/postgresql/data -p 5432:5432 postgres:15
 	@sqlc generate
-	@./bin/tailwindcss-extra-macos-x64 -i ./static/css/input.css -o ./static/css/output.css
-	@templ generate
-	@air -c .air.toml
+	@templ generate --watch --proxy="http://localhost:8080" --open-browser=false & \
+	air -c .air.toml & \
+	./bin/tailwindcss-extra-macos-x64 -i ./static/css/input.css -o ./static/css/output.css --watch
 
 run-local-linux:
 	@docker volume inspect go_indie_hacking_starter_data > /dev/null 2>&1 || docker volume create go_indie_hacking_starter_data
 	@docker ps -a --filter "name=^/go_indie_hacking_starter_postgres$$" --format "{{.Names}}" | grep -w go_indie_hacking_starter_postgres > /dev/null 2>&1 || \
 	docker run -d --name go_indie_hacking_starter_postgres -e POSTGRES_DB=go-indie-hacking-starter -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -v go_indie_hacking_starter_data:/var/lib/postgresql/data -p 5432:5432 postgres:15
 	@sqlc generate
-	@./bin/tailwindcss-extra-linux-x64 -i ./static/css/input.css -o ./static/css/output.css
-	@templ generate
-	@air -c .air.toml
+	@templ generate --watch --proxy="http://localhost:8080" --open-browser=false & \
+	air -c .air.toml & \
+	./bin/tailwindcss-extra-linux-x64 -i ./static/css/input.css -o ./static/css/output.css --watch
 
 fmt:
 	@go fmt ./...
