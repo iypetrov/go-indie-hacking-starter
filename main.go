@@ -11,7 +11,7 @@ import (
 	"github.com/go-playground/form"
 	"github.com/go-playground/validator/v10"
 
-	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/pressly/goose/v3"
 
 	"github.com/iypetrov/go-indie-hacking-starter/database"
@@ -24,22 +24,14 @@ func main() {
 	cfg := NewConfig()
 	logger := NewLogger()
 
-	dbUrl := fmt.Sprintf(
-		"postgres://%s:%s@%s:%s/%s?sslmode=%s",
-		cfg.Database.Username,
-		cfg.Database.Password,
-		cfg.Database.Host,
-		cfg.Database.Port,
-		cfg.Database.Name,
-		cfg.Database.SSL,
-	)
-	conn, err := sql.Open("postgres", dbUrl)
+	conn, err := sql.Open("sqlite3", cfg.Database.File)
 	if err != nil {
 		panic(err)
 	}
+	defer conn.Close()
 	queries := database.New(conn)
 
-	if err := goose.SetDialect("postgres"); err != nil {
+	if err := goose.SetDialect("sqlite3"); err != nil {
 		logger.Error("failed to set dialect: %s", err.Error())
 	}
 	if err := goose.Up(conn, "sql/migrations"); err != nil {

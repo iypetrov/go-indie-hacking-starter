@@ -20,6 +20,7 @@ func StaticFiles(logger Logger) http.Handler {
 		logger.Info("serving static files from local directory")
 		return http.StripPrefix("/", http.FileServer(http.Dir("static")))
 	}
+
 	logger.Info("serving static files from embedded FS")
 	return http.FileServer(http.FS(fs))
 }

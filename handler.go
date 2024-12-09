@@ -13,7 +13,7 @@ import (
 	"github.com/iypetrov/go-indie-hacking-starter/database"
 	"github.com/iypetrov/go-indie-hacking-starter/templates/components"
 	"github.com/iypetrov/go-indie-hacking-starter/templates/views"
-	"github.com/lib/pq"
+	"github.com/mattn/go-sqlite3"
 )
 
 type Handler struct {
@@ -66,24 +66,24 @@ func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w 
 		}
 	}
 
+	id := uuid.New()
 	output, err := hnd.queries.AddEmailToMailingList(
 		ctx,
 		database.AddEmailToMailingListParams{
-			ID:        uuid.New(),
+			ID:        id[:],
 			Email:     input.Email,
-			CreatedAt: time.Now().UTC(),
+			CreatedAt: time.Now().UTC().Format(time.RFC3339),
 		},
 	)
 	if err != nil {
-		var pgErr *pq.Error
-
-		ok := errors.As(err, &pgErr)
-		if ok {
-			if pgErr.Code == "23505" {
+		var sqlErr *sqlite3.Error
+		if errors.As(err, &sqlErr) {
+			if sqlErr.Code == sqlite3.ErrConstraint {
 				AddToast(w, WarningStatusBadRequest(WarnEmailAlreadyExists))
 				return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
 			}
 		}
+
 		AddToast(w, ErrorInternalServerError(ErrFailedToAddEmailToMailingList))
 		return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
 	}
