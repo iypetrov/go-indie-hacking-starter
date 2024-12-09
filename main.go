@@ -61,6 +61,7 @@ func main() {
 	mux.Route("/p", func(mux chi.Router) {
 		mux.Route("/public", func(mux chi.Router) {
 			mux.Get("/home", hnd.HomeView)
+			mux.Get("/login", hnd.LoginView)
 		})
 		mux.Route("/client", func(mux chi.Router) {
 			// No handlers yet

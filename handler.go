@@ -27,6 +27,10 @@ func (hnd *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, views.PublicHome())
 }
 
+func (hnd *Handler) LoginView(w http.ResponseWriter, r *http.Request) {
+	Render(w, r, views.Login())
+}
+
 func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w http.ResponseWriter, r *http.Request) error {
 	err := r.ParseForm()
 	if err != nil {
