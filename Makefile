@@ -1,9 +1,3 @@
-build-prod:
-	@sqlc generate
-	@./bin/tailwindcss-extra-macos-x64 -i ./static/css/input.css -o ./static/css/output.css --minify
-	@templ generate
-	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags prod -o bin/main .
-
 run-local-mac:
 	@sqlc generate
 	@templ generate --watch --proxy="http://localhost:8080" --open-browser=false & \

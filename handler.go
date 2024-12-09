@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"net/http"
 	"time"
 
@@ -76,8 +75,7 @@ func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w 
 		},
 	)
 	if err != nil {
-		var sqlErr *sqlite3.Error
-		if errors.As(err, &sqlErr) {
+		if sqlErr, ok := err.(sqlite3.Error); ok {
 			if sqlErr.Code == sqlite3.ErrConstraint {
 				AddToast(w, WarningStatusBadRequest(WarnEmailAlreadyExists))
 				return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
