@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
+	"github.com/bwmarrin/snowflake"
 )
 
 func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
@@ -20,9 +21,9 @@ func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
 	return nil
 }
 
-func MakeTemplHandler(ctx context.Context, logger Logger, f func(ctx context.Context, logger Logger, w http.ResponseWriter, r *http.Request) error) http.HandlerFunc {
+func MakeTemplHandler(ctx context.Context, logger Logger, sf *snowflake.Node, f func(ctx context.Context, logger Logger, sf *snowflake.Node, w http.ResponseWriter, r *http.Request) error) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := f(ctx, logger, w, r); err != nil {
+		if err := f(ctx, logger, sf, w, r); err != nil {
 			var t Toast
 			if errors.As(err, &t) {
 				AddToast(w, t)

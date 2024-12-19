@@ -1,7 +1,7 @@
 -- name: AddEmailToMailingList :one
 INSERT INTO mailing_list (
-    id, email, created_at
+    id, email
 ) VALUES (
-    ?, ?, ?
+    ?, ?
 ) 
-RETURNING id, email, last_sent_at, created_at;
+RETURNING id, email, last_sent_at;
