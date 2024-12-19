@@ -29,6 +29,15 @@ func main() {
 		panic(err)
 	}
 	defer conn.Close()
+	_, err = conn.Exec(`
+	    PRAGMA journal_mode = WAL;
+	    PRAGMA foreign_keys = ON;
+	    PRAGMA busy_timeout = 5000;
+	`)
+	if err != nil {
+		logger.Error("error applying PRAGMA settings: %v", err)
+	}
+
 	queries := database.New(conn)
 
 	if err := goose.SetDialect("sqlite3"); err != nil {

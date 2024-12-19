@@ -39,3 +39,5 @@ database/
 *_templ.txt
 output.css
 go-indie-hacking-starter.db
+go-indie-hacking-starter.db-shm
+go-indie-hacking-starter.db-wal
