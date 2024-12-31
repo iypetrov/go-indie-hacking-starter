@@ -71,7 +71,6 @@ func main() {
 				mux.Post("/", MakeTemplHandler(ctx, logger, hnd.AddEmailToMailingList))
 			})
 		})
-
 		mux.Route("/client/v0", func(mux chi.Router) {
 			// No handlers yet
 		})
@@ -84,6 +83,7 @@ func main() {
 		w.Write([]byte{})
 	})
 	mux.NotFound(hnd.HomeRedirect)
+
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.App.Port),
 		IdleTimeout:  time.Minute,
