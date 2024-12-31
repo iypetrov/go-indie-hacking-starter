@@ -30,3 +30,7 @@ func MakeTemplHandler(ctx context.Context, logger Logger, f func(ctx context.Con
 		}
 	}
 }
+
+func HxRedirect(w http.ResponseWriter, path string) {
+	w.Header().Set("HX-Redirect", path)
+}

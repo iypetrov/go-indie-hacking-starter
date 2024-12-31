@@ -52,7 +52,7 @@ func main() {
 	}
 
 	mux := chi.NewRouter()
-	mux.Handle("/*", StaticFiles(logger))
+	mux.Handle("/static/*", hnd.StaticFiles(logger))
 	mux.Route("/p", func(mux chi.Router) {
 		mux.Route("/public", func(mux chi.Router) {
 			mux.Get("/home", hnd.HomeView)
@@ -83,6 +83,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte{})
 	})
+	mux.NotFound(hnd.HomeRedirect)
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.App.Port),
 		IdleTimeout:  time.Minute,
