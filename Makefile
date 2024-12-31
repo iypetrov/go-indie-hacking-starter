@@ -22,3 +22,6 @@ update-deps:
 	@chmod +x bin/tailwindcss-extra-macos-x64 
 	@curl -sL https://unpkg.com/htmx.org@2.0.3/dist/htmx.min.js -o static/js/htmx.min.js
 	@curl -sL https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js -o static/js/alpine.min.js
+
+vuln-check:
+	@govulncheck -tags=prod -show verbose ./...
