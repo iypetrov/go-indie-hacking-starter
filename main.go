@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bwmarrin/snowflake"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/form"
 	"github.com/go-playground/validator/v10"
+	"github.com/godruoyi/go-snowflake"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pressly/goose/v3"
@@ -24,10 +24,8 @@ func main() {
 
 	cfg := NewConfig()
 	logger := NewLogger()
-	sf, err := snowflake.NewNode(1)
-	if err != nil {
-		logger.Error("failed to generate snowflake node: %s", err.Error())
-	}
+
+	snowflake.SetMachineID(1)
 
 	conn, err := sql.Open("sqlite3", cfg.Database.File)
 	if err != nil {
@@ -70,7 +68,7 @@ func main() {
 	mux.Route("/api", func(mux chi.Router) {
 		mux.Route("/public/v0", func(mux chi.Router) {
 			mux.Route("/mailing-list", func(mux chi.Router) {
-				mux.Post("/", MakeTemplHandler(ctx, logger, sf, hnd.AddEmailToMailingList))
+				mux.Post("/", MakeTemplHandler(ctx, logger, hnd.AddEmailToMailingList))
 			})
 		})
 

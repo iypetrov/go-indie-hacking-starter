@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/bwmarrin/snowflake"
 	"github.com/go-playground/form"
 	"github.com/go-playground/validator/v10"
+	"github.com/godruoyi/go-snowflake"
 	"github.com/iypetrov/go-indie-hacking-starter/database"
 	"github.com/iypetrov/go-indie-hacking-starter/templates/components"
 	"github.com/iypetrov/go-indie-hacking-starter/templates/views"
@@ -29,7 +29,7 @@ func (hnd *Handler) LoginView(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, views.Login())
 }
 
-func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, sf *snowflake.Node, w http.ResponseWriter, r *http.Request) error {
+func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w http.ResponseWriter, r *http.Request) error {
 	err := r.ParseForm()
 	if err != nil {
 		AddToast(w, ErrorInternalServerError(ErrParsingFrom))
@@ -64,11 +64,10 @@ func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, sf
 		}
 	}
 
-	id := sf.Generate()
 	output, err := hnd.queries.AddEmailToMailingList(
 		ctx,
 		database.AddEmailToMailingListParams{
-			ID:    int64(id),
+			ID:    int64(snowflake.ID()),
 			Email: input.Email,
 		},
 	)
