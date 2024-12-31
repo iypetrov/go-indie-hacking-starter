@@ -26,10 +26,6 @@ type Handler struct {
 	queries       *database.Queries
 }
 
-func (hnd *Handler) HomeRedirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/p/public/home", http.StatusFound)
-}
-
 func (hnd *Handler) StaticFiles(logger Logger) http.Handler {
 	if Profile == "local" {
 		logger.Info("serving static files from local directory")
@@ -111,4 +107,13 @@ func (hnd *Handler) AddEmailToMailingList(ctx context.Context, logger Logger, w 
 
 	AddToast(w, SuccessStatusCreated(SuccEmailAddedToMailingList))
 	return Render(w, r, components.PublicMailingListForm(components.PublicMailingListFormInput{}))
+}
+
+func (hnd *Handler) Healthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte{})
+}
+
+func (hnd *Handler) HomeRedirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/p/public/home", http.StatusFound)
 }

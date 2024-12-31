@@ -78,10 +78,7 @@ func main() {
 			// No handlers yet
 		})
 	})
-	mux.Get("/health-check", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte{})
-	})
+	mux.Get("/healthz", hnd.Healthz)
 	mux.NotFound(hnd.HomeRedirect)
 
 	server := &http.Server{
