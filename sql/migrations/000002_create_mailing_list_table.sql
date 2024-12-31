@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS mailing_list (
     id INTEGER PRIMARY KEY, 
     email TEXT NOT NULL UNIQUE,
-    last_sent_at TEXT
+    last_sent_at INTEGER 
 );
 
 -- +goose Down
