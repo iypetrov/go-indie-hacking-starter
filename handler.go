@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"embed"
-	"io/fs"
 	"net/http"
 
 	"github.com/go-playground/form"
@@ -29,17 +28,11 @@ type Handler struct {
 func (hnd *Handler) StaticFiles(logger Logger) http.Handler {
 	if Profile == "local" {
 		logger.Info("serving static files from local directory")
-		return http.StripPrefix("/", http.FileServer(http.Dir("static")))
-	}
-
-	fs, err := fs.Sub(staticFS, "static")
-	if err != nil {
-		logger.Info("serving static files from local directory")
-		return http.StripPrefix("/", http.FileServer(http.Dir("static")))
+		return http.StripPrefix("/static", http.FileServer(http.Dir("static")))
 	}
 
 	logger.Info("serving static files from embedded FS")
-	return http.FileServer(http.FS(fs))
+	return http.StripPrefix("/", http.FileServer(http.FS(staticFS)))
 }
 
 func (hnd *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
