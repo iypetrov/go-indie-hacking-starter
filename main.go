@@ -24,10 +24,9 @@ func main() {
 	defer cancel()
 
 	cfg := NewConfig()
-
 	awsCfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(cfg.AWS.Region))
 	if err != nil {
-		panic(fmt.Errorf("failed to load AWS config: %w", err))
+		panic(fmt.Errorf("failed to load AWS config: %s", err.Error()))
 	}
 
 	cfg.Load(ctx, awsCfg)

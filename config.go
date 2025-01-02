@@ -61,9 +61,11 @@ func (cfg *Config) Load(ctx context.Context, awsCfg aws.Config) {
 	} else {
 		svc := secretsmanager.NewFromConfig(awsCfg)
 
-		cfg.App.Addr = getSecretFromAWSSecretManager(ctx, svc, "go_indie_hacking_starter_addr")
+		// cfg.App.Addr = getSecretFromAWSSecretManager(ctx, svc, "go_indie_hacking_starter_addr")
+		cfg.App.Addr = getSecretFromAWSSecretManager(ctx, svc, "blog_addr")
 		cfg.App.Port = "8080"
-		cfg.Database.File = getSecretFromAWSSecretManager(ctx, svc, "go_indie_hacking_starter_db_file")
+		// cfg.Database.File = getSecretFromAWSSecretManager(ctx, svc, "go_indie_hacking_starter_db_file")
+		cfg.Database.File = getSecretFromAWSSecretManager(ctx, svc, "blog_db_file")
 	}
 }
 
@@ -74,7 +76,7 @@ func getSecretFromAWSSecretManager(ctx context.Context, svc *secretsmanager.Clie
 	}
 	result, err := svc.GetSecretValue(ctx, input)
 	if err != nil {
-		panic(fmt.Errorf("can't find secret \"%s\" in aws secret manager", secretName))
+		panic(fmt.Errorf("can't find secret \"%s\" in aws secret manager: %s", secretName, err.Error()))
 	}
 
 	return *result.SecretString
