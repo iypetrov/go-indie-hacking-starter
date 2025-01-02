@@ -43,9 +43,9 @@ func NewConfig() *Config {
 		cfg.App.Port = "8080"
 		cfg.Database.File = os.Getenv("APP_DB_FILE")
 	} else {
-		cfg.AWS.Region = os.Getenv("AWS_REGION")
-		cfg.AWS.AccessKeyID = os.Getenv("AWS_ACCESS_KEY_ID")
-		cfg.AWS.SecretAcessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
+		cfg.AWS.Region = getSecretFromDockerSwarm("aws_region")
+		cfg.AWS.AccessKeyID = getSecretFromDockerSwarm("aws_access_key_id")
+		cfg.AWS.SecretAcessKey = getSecretFromDockerSwarm("aws_secret_access_key")
 
 		sess, err := session.NewSession(&aws.Config{
 			Region: aws.String(cfg.AWS.Region),
@@ -73,4 +73,19 @@ func getSecretFromAWSSecretManager(sm *secretsmanager.SecretsManager, secretName
 	}
 
 	return *result.SecretString
+}
+
+func getSecretFromDockerSwarm(secretName string) string {
+	secretFile, err := os.Open("/run/secrets/" + secretName)
+	if err != nil {
+		panic(fmt.Errorf("can't open secret \"%s\" in docker swarm", secretName))
+	}
+	defer secretFile.Close()
+
+	secretContent, err := os.ReadFile("/run/secrets/" + secretName)
+	if err != nil {
+		panic(fmt.Errorf("can't find secret \"%s\" in docker swarm", secretName))
+	}
+
+	return string(secretContent)
 }
