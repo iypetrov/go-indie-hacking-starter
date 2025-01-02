@@ -41,3 +41,10 @@ output.css
 go-indie-hacking-starter.db
 go-indie-hacking-starter.db-shm
 go-indie-hacking-starter.db-wal
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup

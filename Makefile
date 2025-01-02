@@ -25,3 +25,9 @@ update-deps:
 
 vuln-check:
 	@govulncheck -tags=prod -show verbose ./...
+
+tf-apply:
+	@(cd infr && terraform apply -auto-approve \
+		-var "go_indie_hacking_starter_addr=deviliablog.com" \
+		-var "go_indie_hacking_starter_db_file=go-indie-hacking-starter.db" \
+	)	
