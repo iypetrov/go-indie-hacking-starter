@@ -53,6 +53,7 @@ func main() {
 
 	mux := chi.NewRouter()
 	mux.Handle("/static/*", hnd.StaticFiles(logger))
+	mux.Get("/favicon.ico", hnd.Favicon)
 	mux.Route("/p", func(mux chi.Router) {
 		mux.Route("/public", func(mux chi.Router) {
 			mux.Get("/home", hnd.HomeView)

@@ -35,6 +35,10 @@ func (hnd *Handler) StaticFiles(logger Logger) http.Handler {
 	return http.StripPrefix("/", http.FileServer(http.FS(staticFS)))
 }
 
+func (hnd *Handler) Favicon(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "static/favicon.ico")
+}
+
 func (hnd *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, views.PublicHome())
 }
