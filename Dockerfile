@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 # You can optimize build time by creating a custom image with these dependencies installed
 RUN go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.27.0
-RUN go install github.com/a-h/templ/cmd/templ@v0.2.793
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.819
 RUN ./bin/tailwindcss-extra-linux-x64 -i ./static/css/input.css -o ./static/css/output.css --minify
 RUN sqlc generate
 RUN templ generate
