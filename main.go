@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/form"
 	"github.com/go-playground/validator/v10"
@@ -23,14 +22,8 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	cfg := NewConfig()
-	awsCfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(cfg.AWS.Region))
-	if err != nil {
-		panic(fmt.Errorf("failed to load AWS config: %s", err.Error()))
-	}
-
-	cfg.Load(ctx, awsCfg)
 	logger := NewLogger()
+	cfg := NewConfig()
 
 	snowflake.SetMachineID(1)
 
