@@ -36,7 +36,17 @@ func (hnd *Handler) StaticFiles(logger Logger) http.Handler {
 }
 
 func (hnd *Handler) Favicon(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "static/favicon.ico")
+	if Profile == "local" {
+		http.ServeFile(w, r, "static/favicon.ico")
+	} else {
+		data, err := staticFS.ReadFile("static/favicon.ico")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "image/x-icon")
+		w.Write(data)
+	}
 }
 
 func (hnd *Handler) HomeView(w http.ResponseWriter, r *http.Request) {
