@@ -27,17 +27,17 @@ func main() {
 
 	snowflake.SetMachineID(1)
 
-	conn, err := sql.Open("sqlite3", cfg.Database.File)
+	db, err := sql.Open("sqlite3", cfg.Database.File)
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
-	queries := database.New(conn)
+	defer db.Close()
+	queries := database.New(db)
 
 	if err := goose.SetDialect("sqlite3"); err != nil {
 		logger.Error("failed to set dialect: %s", err.Error())
 	}
-	if err := goose.Up(conn, "sql/migrations"); err != nil {
+	if err := goose.Up(db, "sql/migrations"); err != nil {
 		logger.Error("failed to run migrations: %s", err.Error())
 	}
 
@@ -47,7 +47,7 @@ func main() {
 	hnd := Handler{
 		formDecoder:   formDecoder,
 		formValidator: formValidator,
-		conn:          conn,
+		db:            db,
 		queries:       queries,
 	}
 

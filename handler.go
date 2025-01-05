@@ -21,7 +21,7 @@ var staticFS embed.FS
 type Handler struct {
 	formDecoder   *form.Decoder
 	formValidator *validator.Validate
-	conn          *sql.DB
+	db            *sql.DB
 	queries       *database.Queries
 }
 
