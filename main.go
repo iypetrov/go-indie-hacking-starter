@@ -27,7 +27,7 @@ func main() {
 
 	snowflake.SetMachineID(1)
 
-	db, err := sql.Open("sqlite3", cfg.Database.File)
+	db, err := sql.Open("sqlite3", fmt.Sprintf("/db/%s", cfg.Database.File))
 	if err != nil {
 		panic(err)
 	}
