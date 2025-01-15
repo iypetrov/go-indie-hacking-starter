@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -28,11 +27,7 @@ func main() {
 
 	snowflake.SetMachineID(1)
 
-	err := os.MkdirAll("./db", os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	db, err := sql.Open("sqlite3", fmt.Sprintf("./db/%s", cfg.Database.File))
+	db, err := sql.Open("sqlite3", cfg.Database.File)
 	if err != nil {
 		panic(err)
 	}
