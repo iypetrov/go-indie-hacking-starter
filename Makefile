@@ -17,21 +17,16 @@ fmt:
 
 update-deps:
 	@curl -sL https://github.com/dobicinaitis/tailwind-cli-extra/releases/latest/download/tailwindcss-extra-linux-x64 -o bin/tailwindcss-extra-linux-x64
-	@chmod +x bin/tailwindcss-extra-linux-x64 
-	@curl -sL https://github.com/dobicinaitis/tailwind-cli-extra/releases/latest/download/tailwindcss-extra-macos-x64 -o bin/tailwindcss-extra-macos-x64 
-	@chmod +x bin/tailwindcss-extra-macos-x64 
+	@chmod +x bin/tailwindcss-extra-linux-x64
+	@curl -sL https://github.com/dobicinaitis/tailwind-cli-extra/releases/latest/download/tailwindcss-extra-macos-x64 -o bin/tailwindcss-extra-macos-x64
+	@chmod +x bin/tailwindcss-extra-macos-x64
 	@curl -sL https://unpkg.com/htmx.org@2.0.3/dist/htmx.min.js -o static/js/htmx.min.js
 	@curl -sL https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js -o static/js/alpine.min.js
+	@go get -u
+	@go mod tidy
+	@go mod vendor
 
 vuln-check:
 	@govulncheck -tags=prod -show verbose ./...
 
-deps-update:
-	@go get -u
-	@go mod tidy
 
-tf-apply:
-	@(cd infr && terraform apply -auto-approve \
-		-var "go_indie_hacking_starter_addr=deviliablog.com" \
-		-var "go_indie_hacking_starter_db_file=go-indie-hacking-starter.db" \
-	)	
