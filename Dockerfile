@@ -8,6 +8,7 @@ RUN ./bin/tailwindcss-extra-linux-x64 -i ./static/css/input.css -o ./static/css/
 RUN sqlc generate
 RUN templ generate
 RUN go mod tidy
+RUN go mod vendor
 # CGO_ENABLED=0 issue with github.com/mattn/go-sqlite3 occurs because the go-sqlite3 package requires the use of cgo to work
 RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -tags prod -o bin/main .
 
