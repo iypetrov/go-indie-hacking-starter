@@ -13,5 +13,6 @@ RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -tags prod -o bin/main .
 
 FROM gcr.io/distroless/base-debian12 AS run-stage
 COPY --from=build-stage /app/sql/migrations /sql/migrations
+COPY --from=build-stage /app/data /data
 COPY --from=build-stage /app/bin/main /bin/main
 CMD ["/bin/main"]
