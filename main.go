@@ -53,7 +53,7 @@ func main() {
 
 	mux := chi.NewRouter()
 	mux.Handle("/static/*", hnd.StaticFiles(logger))
-	mux.Route("/p", func(mux chi.Router) {
+	mux.With(RequestLoggerMiddleware).Route("/p", func(mux chi.Router) {
 		mux.Route("/public", func(mux chi.Router) {
 			mux.Get("/home", hnd.HomeView)
 			mux.Get("/login", hnd.LoginView)
