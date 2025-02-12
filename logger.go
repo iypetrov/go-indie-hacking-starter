@@ -12,14 +12,15 @@ type Logger interface {
 	Error(msg string, args ...interface{})
 }
 
-type LoggerLocal struct{}
-
 func NewLogger() Logger {
 	if Profile == "local" {
 		return &LoggerLocal{}
 	}
 	return &LoggerProd{}
 }
+
+// Logger implementation for local development
+type LoggerLocal struct{}
 
 func (l *LoggerLocal) Debug(msg string, args ...interface{}) {
 	log.Println("DEBUG: " + fmt.Sprintf(msg, args...))
@@ -37,6 +38,7 @@ func (l *LoggerLocal) Error(msg string, args ...interface{}) {
 	log.Println("ERROR: " + fmt.Sprintf(msg, args...))
 }
 
+// Logger implementation for prod (send logs to AWS Cloudwatch)
 type LoggerProd struct{}
 
 func (l *LoggerProd) Debug(msg string, args ...interface{}) {
