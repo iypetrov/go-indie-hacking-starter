@@ -9,6 +9,13 @@ import (
 	"github.com/a-h/templ"
 )
 
+// We use Cloudflare tunnels & Traefik proxy in front of the app
+// The real user ip address is set to Cf-Connecting-Ip header
+// The r.RemoteAddr gets back the ip of Traefik
+func RealUserIP(r *http.Request) string {
+	return r.Header.Get("Cf-Connecting-Ip")
+}
+
 func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
 	w.Header().Set("Content-Type", "text/html")
 
